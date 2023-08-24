@@ -1,0 +1,15 @@
+{% extends 'bboard/default.html' %}
+
+{% load custom_tags %}
+
+{% block title %}
+<h1>Post</h1>
+<hr>
+{% endblock title %}
+
+{% block content %}
+<h3>{% current_time '%b %d %Y' %}</h3>
+{{ post.text }}<br>
+
+{{ post.datePub }}
+{% endblock content %}

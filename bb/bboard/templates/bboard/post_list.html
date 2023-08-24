@@ -1,0 +1,53 @@
+{% extends 'bboard/default.html' %}
+
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block title %}
+Posts
+{% endblock title %}
+
+
+{% block content %}
+    <h1>All posts</h1>
+    <h3>{% current_time '%b %d %Y' %}</h3>
+    <hr>
+
+    {% if perm.bboard.add_post %}
+    <a href="{% url 'post_create' %}">Add post</a>
+    {% endif %}
+
+    {% if posts %}
+        <table>
+            <tr>
+                <td>Title</td>
+                <td>text</td>
+                <td>Date</td>
+
+                {% if perm.bboard.change_post or perm.bboard.delete_post %}
+                <td>Action</td>
+                {% endif %}
+
+            </tr>
+            {% for post in posts %}
+            <tr>
+                <td>{{ post.title|truncatechars:5 }}</td>
+                <td>{{ post.text|truncatechars:8 }}</td>
+                <td>{{ post.datePub }}</td>
+                <td>{{ post.Post.player }}</td>
+
+                <td>
+                    {% if perm.bboard.change_post %}
+                    <a href="{% url 'post_edit' %}">Edit</a>
+                    {% endif %}
+                    {% if perm.bboard.delete_post %}
+                    <a href="{% url 'post_delete' post.id %}">Delete</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>Объявлений нет</h2>
+    {% endif %}
+{% endblock content %}

@@ -1,0 +1,9 @@
+{% extends 'bboard/default.html' %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form_as.p }}
+    <input type="submit" value="save"/>
+</form>
+{% endblock content %}

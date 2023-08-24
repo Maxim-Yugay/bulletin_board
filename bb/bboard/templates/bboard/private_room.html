@@ -1,0 +1,36 @@
+{% extends 'bboard/default.html' %}
+
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block title %}
+Posts
+{% endblock title %}
+
+
+{% block content %}
+    <h1>Обьявления {{ post.player }}</h1>
+    <h3>{% current_time '%b %d %Y' %}</h3>
+    <hr>
+    {% if posts.player %}
+        {% if posts.player == request.user %}
+        <table>
+            <tr>
+                <td>Title</td>
+                <td>text</td>
+                <td>Date</td>
+            </tr>
+            {% for post in posts.player %}
+            <tr>
+                <td>{{ post.title|truncatechars:5 }}</td>
+                <td>{{ post.text|truncatechars:8 }}</td>
+                <td>{{ post.datePub }}</td>
+                <td>{{ post.Post.player }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    {% else %}
+        <h2>Объявлений нет</h2>
+    {% endif %}
+{% endblock content %}
