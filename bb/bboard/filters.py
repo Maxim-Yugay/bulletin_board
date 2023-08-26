@@ -1,5 +1,5 @@
 from django_filters import FilterSet
-from .models import Comment, Response, Post
+from .models import Comment, Post, Reply
 
 
 class CommentFilter(FilterSet):
@@ -12,7 +12,7 @@ class CommentFilter(FilterSet):
 
 class ResponseFilter(FilterSet):
     class Meta:
-        model = Response
+        model = Reply
         fields = {
             'responseComment': ['contains']
         }

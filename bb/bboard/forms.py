@@ -7,10 +7,11 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = {
+        fields = [
+            'player',
+            'categoryType',
             'title',
             'text',
-            'player',
-        }
+        ]
 
 

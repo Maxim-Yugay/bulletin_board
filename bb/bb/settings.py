@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'bb.wsgi.application'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.accounts.auth_backends.AuthenticationBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 # Database
@@ -153,16 +153,19 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-
 ACCOUNT_FORMS = {'signup': 'accounts.forms.CustomSignupForm'}
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
 
 EMAIL_BACKENDS = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'yugay.maxim@yandex.ru'
-EMAIL_HOST_PASSWORD = 'SkillFactory23'
+EMAIL_HOST_USER = 'yugay.maxim'
+EMAIL_HOST_PASSWORD = 'gbbtrkcghncrdufo'
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
 DEFAULT_FROM_EMAIL = 'yugay.maxim@yandex.ru'
+
+SERVER_EMAIL = 'yugay.maxim@yandex.ru'
 

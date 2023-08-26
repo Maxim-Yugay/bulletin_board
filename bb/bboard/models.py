@@ -13,15 +13,18 @@ CATEGORY_CHOICES = [
         ('TANNER', 'Кожевник'),
         ('POTION_MASTER', 'Зельевары'),
         ('SPELL_MASTER', 'Мастер заклинаний'),
-    ]
+]
 
 
 class Player(models.Model):
     userPlayer = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.userPlayer}"
+
 
 class Category(models.Model):
-    name = models.CharField(max_length=32, unique=True)
+    name = models.CharField(max_length=24, unique=True, choices=CATEGORY_CHOICES)
 
     def __str__(self):
         return self.name
@@ -29,19 +32,10 @@ class Category(models.Model):
 
 class Post(models.Model):
     player = models.OneToOneField(Player, on_delete=models.CASCADE)
-    categoryType = models.CharField(max_length=32, choices=CATEGORY_CHOICES, default='SELLER')
+    categoryType = models.CharField(max_length=16, choices=CATEGORY_CHOICES, default='SELLER')
     datePub = models.DateTimeField(auto_now_add=True)
-    title = models.CharField(max_length=128)
+    title = models.CharField(max_length=128,)
     text = models.TextField()
-    # cmnt = models.BooleanField()
-
-    # def accept(self):
-    #     self.cmnt
-    #     self.save()
-    #
-    # def cancel(self):
-    #     self.cmnt
-    #     self.save()
 
     def get_absolute_url(self):
         return reverse('post_detail', args=[str(self.id)])
@@ -60,6 +54,12 @@ class Comment(models.Model):
         return self.commentPlayer
 
 
+class Reply(models.Model):
+    replyPost = models.ForeignKey(Post, on_delete=models.CASCADE)
+    reply = models.BooleanField(default=False)
+    date = models.DateTimeField(auto_now_add=True)
+
+
 class PostCategory(models.Model):
     postThrough = models.ForeignKey(Post, on_delete=models.CASCADE)
     categoryThrough = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -68,3 +68,4 @@ class PostCategory(models.Model):
 class Subscription(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='sub')
     category = models.ForeignKey(to=Category, on_delete=models.CASCADE, related_name='sub')
+

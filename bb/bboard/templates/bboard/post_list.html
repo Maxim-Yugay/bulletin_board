@@ -13,7 +13,8 @@ Posts
     <h3>{% current_time '%b %d %Y' %}</h3>
     <hr>
 
-    {% if perm.bboard.add_post %}
+    {% if perms.bboard.add_post %}
+
     <a href="{% url 'post_create' %}">Add post</a>
     {% endif %}
 
@@ -24,7 +25,7 @@ Posts
                 <td>text</td>
                 <td>Date</td>
 
-                {% if perm.bboard.change_post or perm.bboard.delete_post %}
+                {% if perms.bboard.change_post or perms.bboard.delete_post %}
                 <td>Action</td>
                 {% endif %}
 
@@ -37,10 +38,10 @@ Posts
                 <td>{{ post.Post.player }}</td>
 
                 <td>
-                    {% if perm.bboard.change_post %}
-                    <a href="{% url 'post_edit' %}">Edit</a>
+                    {% if perms.bboard.change_post %}
+                    <a href="{% url 'post_edit' pk=post.id %}">Edit</a>
                     {% endif %}
-                    {% if perm.bboard.delete_post %}
+                    {% if perms.bboard.delete_post %}
                     <a href="{% url 'post_delete' post.id %}">Delete</a>
                     {% endif %}
                 </td>

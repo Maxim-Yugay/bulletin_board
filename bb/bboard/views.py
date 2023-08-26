@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_protect
 from datetime import datetime
 
 from .forms import PostForm
-from .models import Post, Player, Subscription, Category
+from .models import Post, Subscription, Category
 
 
 class PostList(ListView):
@@ -26,16 +26,15 @@ class PostList(ListView):
 
 class PostDetail(DetailView):
     model = Post
-    template_name = 'post_detail.html'
     context_object_name = 'post'
 
 
 class PostCreate(PermissionRequiredMixin, CreateView):
-    permission_required = ('bboard.add_post')
+    permission_required = 'bboard.add_post'
     form_class = PostForm
     raise_exception = True
     model = Post
-    template_name = 'bboard/post_create.html'
+    template_name = 'bboard/post_edit.html'
     success_url = reverse_lazy('post_detail')
 
     def form_valid(self, form):
@@ -47,7 +46,7 @@ class PostCreate(PermissionRequiredMixin, CreateView):
 
 
 class PostUpdate(PermissionRequiredMixin, UpdateView):
-    permission_required = ('bboard.post_edit')
+    permission_required = 'bboard.post_edit'
     form_class = PostForm
     model = Post
     template_name = 'bboard/post_create.html'
@@ -55,7 +54,7 @@ class PostUpdate(PermissionRequiredMixin, UpdateView):
 
 
 class PostDelete(PermissionRequiredMixin, DeleteView):
-    permission_required = ('bboard.post_delete')
+    permission_required = 'bboard.post_delete'
     form_class = PostForm
     model = Post
     template_name = 'bboard/post_delete.html'
@@ -68,10 +67,9 @@ class PrivatePage(ListView):
     template_name = 'bboard/private_room.html'
     context_object_name = 'private_room'
 
-    # def get_queryset(self):
-    #     player_post = self.queryset.filter(player=self.request.user)
-    #     return player_post
 
+@login_required
+@csrf_protect
 def subscriptions(request):
     if request.method == "POST":
         category_id = request.objects.get('category_id')
@@ -86,4 +84,4 @@ def subscriptions(request):
     categories_with_subscriptions = Category.objects.annotate(
         user_subscribed=Exists(Subscription.objects.filter(user=request.user, category=OuterRef('pk')))
     ).order_by('name')
-    return render(request, 'subscriptions.html', {'categories': categories_with_subscriptions})
+    return render(request, 'bboard/subscriptions.html', {'categories': categories_with_subscriptions})
